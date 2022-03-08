@@ -11,18 +11,28 @@ from sklearn.linear_model import LinearRegression
 
 # Get the script arguments (regularization rate and training dataset ID)
 parser = argparse.ArgumentParser()
-parser.add_argument("--input-data", type=str, dest='training_dataset_id', help='training dataset')
+parser.add_argument("--training-data", type=str, dest='training_data', help='training dataset')
+parser.add_argument("--age", type=str, dest='age', help='age')
 args = parser.parse_args()
+
 
 # Get the experiment run context
 run = Run.get_context()
 
-# Get the training dataset
+training_data = args.training_data
+
+# load the prepared data file in the training folder
 print("Loading Data...")
-df = run.input_datasets['training_data'].to_pandas_dataframe()
+file_path = os.path.join(training_data,'data.csv')
+df = pd.read_csv(file_path)
+
+run.log('final prep dataset len', len(df))
+run.log('cols', len(df.columns))
 
 # Separate features and labels
 y = df.valeur_fonciere
+
+run.log("nb null values", (df.isna()).sum(axis=0).sum())
 X = df.drop("valeur_fonciere",axis=1)
 
 # Split data into training set and test set
@@ -42,5 +52,6 @@ run.log('test score', model.score(X_test, y_test))
 os.makedirs('outputs', exist_ok=True)
 # note file saved in the outputs folder is automatically uploaded into experiment record
 joblib.dump(value=model, filename='outputs/projetCloud_model.pkl')
+
 
 run.complete()
