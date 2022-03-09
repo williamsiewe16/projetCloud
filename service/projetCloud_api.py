@@ -3,7 +3,7 @@ import joblib
 import numpy as np
 import os
 
-# Called when the service is loaded
+#Called when the service is loaded
 def init():
     global model
     # Get the path to the deployed model file and load it
