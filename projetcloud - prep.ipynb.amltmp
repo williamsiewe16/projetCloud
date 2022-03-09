@@ -1,0 +1,385 @@
+{
+  "cells": [
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "import pandas as pd"
+      ],
+      "outputs": [],
+      "execution_count": 6,
+      "metadata": {
+        "gather": {
+          "logged": 1646696633638
+        }
+      },
+      "id": "3c1064b5"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df = pd.read_csv('sample.csv')"
+      ],
+      "outputs": [],
+      "execution_count": 7,
+      "metadata": {
+        "gather": {
+          "logged": 1646696637355
+        }
+      },
+      "id": "77b33f7a"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "cols = list(df.columns.values)\n",
+        "cols.remove(\"date_mutation\")\n",
+        "df[cols]"
+      ],
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "execution_count": 9,
+          "data": {
+            "text/plain": "       id_mutation  numero_disposition nature_mutation  valeur_fonciere  \\\n0     2016-1203354                   2           Vente           3100.0   \n1     2017-1140739                   1           Vente         100000.0   \n2      2017-870932                   1           Vente         176200.0   \n3      2016-885548                   1           Vente         180000.0   \n4     2016-1201902                   1           Vente          13900.0   \n...            ...                 ...             ...              ...   \n9995  2016-1102012                   1           Vente            946.0   \n9996  2016-1176055                   1           Vente         329000.0   \n9997  2017-1229120                   1           Vente           3500.0   \n9998   2017-403386                   1           Vente          13500.0   \n9999   2017-571050                   1           Vente         138000.0   \n\n      adresse_numero adresse_suffixe    adresse_nom_voie adresse_code_voie  \\\n0                NaN             NaN          LE PRIEURE              B022   \n1               12.0             NaN  RUE DES TISSERANDS              0350   \n2               46.0             NaN   RUE DE THEROUANNE              1680   \n3             5324.0             NaN        RES LA NEUVA              A083   \n4               59.0             NaN   AV ROGER GUICHARD              0443   \n...              ...             ...                 ...               ...   \n9995             NaN             NaN         LE PONCELOT              B121   \n9996             6.0               B      ALL DU PLATEAU              0740   \n9997             NaN             NaN         LA MARNIERE              B339   \n9998             NaN             NaN            ESTALENS              B017   \n9999             1.0             NaN        ALL DU PITEY              1387   \n\n      code_postal code_commune  ...   type_local surface_reelle_bati  \\\n0         95000.0        95074  ...          NaN                 NaN   \n1         81800.0        81220  ...       Maison                81.0   \n2         62500.0        62765  ...       Maison               185.0   \n3         73270.0        73034  ...  Appartement                39.0   \n4         95610.0        95218  ...   Dépendance                 NaN   \n...           ...          ...  ...          ...                 ...   \n9995      89380.0        89013  ...          NaN                 NaN   \n9996      93340.0        93062  ...   Dépendance                 NaN   \n9997      86390.0        86120  ...          NaN                 NaN   \n9998      32110.0        32390  ...          NaN                 NaN   \n9999      40200.0        40184  ...   Dépendance                 NaN   \n\n      nombre_pieces_principales code_nature_culture nature_culture  \\\n0                           NaN                   S           sols   \n1                           3.0                   S           sols   \n2                           6.0                   S           sols   \n3                           2.0                 NaN            NaN   \n4                           0.0                 NaN            NaN   \n...                         ...                 ...            ...   \n9995                        NaN                   T         terres   \n9996                        0.0                 NaN            NaN   \n9997                        NaN                   J        jardins   \n9998                        NaN                   T         terres   \n9999                        0.0                 NaN            NaN   \n\n     code_nature_culture_speciale  nature_culture_speciale surface_terrain  \\\n0                             NaN                      NaN            96.0   \n1                             NaN                      NaN            91.0   \n2                             NaN                      NaN           223.0   \n3                             NaN                      NaN             NaN   \n4                             NaN                      NaN             NaN   \n...                           ...                      ...             ...   \n9995                          NaN                      NaN          2848.0   \n9996                          NaN                      NaN             NaN   \n9997                          NaN                      NaN           311.0   \n9998                          NaN                      NaN          9236.0   \n9999                          NaN                      NaN             NaN   \n\n      longitude   latitude  \n0      2.000901  49.023909  \n1      1.726600  43.822678  \n2      2.264436  50.748282  \n3      6.571346  45.685170  \n4      2.099404  49.031375  \n...         ...        ...  \n9995   3.502363  47.875843  \n9996   2.530342  48.897843  \n9997   0.957504  46.334447  \n9998  -0.076637  43.718375  \n9999  -1.291595  44.211026  \n\n[10000 rows x 39 columns]",
+            "text/html": "<div>\n<style scoped>\n    .dataframe tbody tr th:only-of-type {\n        vertical-align: middle;\n    }\n\n    .dataframe tbody tr th {\n        vertical-align: top;\n    }\n\n    .dataframe thead th {\n        text-align: right;\n    }\n</style>\n<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>id_mutation</th>\n      <th>numero_disposition</th>\n      <th>nature_mutation</th>\n      <th>valeur_fonciere</th>\n      <th>adresse_numero</th>\n      <th>adresse_suffixe</th>\n      <th>adresse_nom_voie</th>\n      <th>adresse_code_voie</th>\n      <th>code_postal</th>\n      <th>code_commune</th>\n      <th>...</th>\n      <th>type_local</th>\n      <th>surface_reelle_bati</th>\n      <th>nombre_pieces_principales</th>\n      <th>code_nature_culture</th>\n      <th>nature_culture</th>\n      <th>code_nature_culture_speciale</th>\n      <th>nature_culture_speciale</th>\n      <th>surface_terrain</th>\n      <th>longitude</th>\n      <th>latitude</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>0</th>\n      <td>2016-1203354</td>\n      <td>2</td>\n      <td>Vente</td>\n      <td>3100.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>LE PRIEURE</td>\n      <td>B022</td>\n      <td>95000.0</td>\n      <td>95074</td>\n      <td>...</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>S</td>\n      <td>sols</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>96.0</td>\n      <td>2.000901</td>\n      <td>49.023909</td>\n    </tr>\n    <tr>\n      <th>1</th>\n      <td>2017-1140739</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>100000.0</td>\n      <td>12.0</td>\n      <td>NaN</td>\n      <td>RUE DES TISSERANDS</td>\n      <td>0350</td>\n      <td>81800.0</td>\n      <td>81220</td>\n      <td>...</td>\n      <td>Maison</td>\n      <td>81.0</td>\n      <td>3.0</td>\n      <td>S</td>\n      <td>sols</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>91.0</td>\n      <td>1.726600</td>\n      <td>43.822678</td>\n    </tr>\n    <tr>\n      <th>2</th>\n      <td>2017-870932</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>176200.0</td>\n      <td>46.0</td>\n      <td>NaN</td>\n      <td>RUE DE THEROUANNE</td>\n      <td>1680</td>\n      <td>62500.0</td>\n      <td>62765</td>\n      <td>...</td>\n      <td>Maison</td>\n      <td>185.0</td>\n      <td>6.0</td>\n      <td>S</td>\n      <td>sols</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>223.0</td>\n      <td>2.264436</td>\n      <td>50.748282</td>\n    </tr>\n    <tr>\n      <th>3</th>\n      <td>2016-885548</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>180000.0</td>\n      <td>5324.0</td>\n      <td>NaN</td>\n      <td>RES LA NEUVA</td>\n      <td>A083</td>\n      <td>73270.0</td>\n      <td>73034</td>\n      <td>...</td>\n      <td>Appartement</td>\n      <td>39.0</td>\n      <td>2.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>6.571346</td>\n      <td>45.685170</td>\n    </tr>\n    <tr>\n      <th>4</th>\n      <td>2016-1201902</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>13900.0</td>\n      <td>59.0</td>\n      <td>NaN</td>\n      <td>AV ROGER GUICHARD</td>\n      <td>0443</td>\n      <td>95610.0</td>\n      <td>95218</td>\n      <td>...</td>\n      <td>Dépendance</td>\n      <td>NaN</td>\n      <td>0.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>2.099404</td>\n      <td>49.031375</td>\n    </tr>\n    <tr>\n      <th>...</th>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n    </tr>\n    <tr>\n      <th>9995</th>\n      <td>2016-1102012</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>946.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>LE PONCELOT</td>\n      <td>B121</td>\n      <td>89380.0</td>\n      <td>89013</td>\n      <td>...</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>T</td>\n      <td>terres</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>2848.0</td>\n      <td>3.502363</td>\n      <td>47.875843</td>\n    </tr>\n    <tr>\n      <th>9996</th>\n      <td>2016-1176055</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>329000.0</td>\n      <td>6.0</td>\n      <td>B</td>\n      <td>ALL DU PLATEAU</td>\n      <td>0740</td>\n      <td>93340.0</td>\n      <td>93062</td>\n      <td>...</td>\n      <td>Dépendance</td>\n      <td>NaN</td>\n      <td>0.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>2.530342</td>\n      <td>48.897843</td>\n    </tr>\n    <tr>\n      <th>9997</th>\n      <td>2017-1229120</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>3500.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>LA MARNIERE</td>\n      <td>B339</td>\n      <td>86390.0</td>\n      <td>86120</td>\n      <td>...</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>J</td>\n      <td>jardins</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>311.0</td>\n      <td>0.957504</td>\n      <td>46.334447</td>\n    </tr>\n    <tr>\n      <th>9998</th>\n      <td>2017-403386</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>13500.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>ESTALENS</td>\n      <td>B017</td>\n      <td>32110.0</td>\n      <td>32390</td>\n      <td>...</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>T</td>\n      <td>terres</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>9236.0</td>\n      <td>-0.076637</td>\n      <td>43.718375</td>\n    </tr>\n    <tr>\n      <th>9999</th>\n      <td>2017-571050</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>138000.0</td>\n      <td>1.0</td>\n      <td>NaN</td>\n      <td>ALL DU PITEY</td>\n      <td>1387</td>\n      <td>40200.0</td>\n      <td>40184</td>\n      <td>...</td>\n      <td>Dépendance</td>\n      <td>NaN</td>\n      <td>0.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>-1.291595</td>\n      <td>44.211026</td>\n    </tr>\n  </tbody>\n</table>\n<p>10000 rows × 39 columns</p>\n</div>"
+          },
+          "metadata": {}
+        }
+      ],
+      "execution_count": 9,
+      "metadata": {
+        "gather": {
+          "logged": 1646696668869
+        }
+      },
+      "id": "15d2e3a7"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.head()"
+      ],
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "execution_count": 10,
+          "data": {
+            "text/plain": "    id_mutation date_mutation  numero_disposition nature_mutation  \\\n0  2016-1203354    2016-06-23                   2           Vente   \n1  2017-1140739    2017-05-30                   1           Vente   \n2   2017-870932    2017-07-06                   1           Vente   \n3   2016-885548    2016-06-02                   1           Vente   \n4  2016-1201902    2016-04-14                   1           Vente   \n\n   valeur_fonciere  adresse_numero adresse_suffixe    adresse_nom_voie  \\\n0           3100.0             NaN             NaN          LE PRIEURE   \n1         100000.0            12.0             NaN  RUE DES TISSERANDS   \n2         176200.0            46.0             NaN   RUE DE THEROUANNE   \n3         180000.0          5324.0             NaN        RES LA NEUVA   \n4          13900.0            59.0             NaN   AV ROGER GUICHARD   \n\n  adresse_code_voie  code_postal  ...   type_local surface_reelle_bati  \\\n0              B022      95000.0  ...          NaN                 NaN   \n1              0350      81800.0  ...       Maison                81.0   \n2              1680      62500.0  ...       Maison               185.0   \n3              A083      73270.0  ...  Appartement                39.0   \n4              0443      95610.0  ...   Dépendance                 NaN   \n\n  nombre_pieces_principales  code_nature_culture nature_culture  \\\n0                       NaN                    S           sols   \n1                       3.0                    S           sols   \n2                       6.0                    S           sols   \n3                       2.0                  NaN            NaN   \n4                       0.0                  NaN            NaN   \n\n  code_nature_culture_speciale nature_culture_speciale  surface_terrain  \\\n0                          NaN                     NaN             96.0   \n1                          NaN                     NaN             91.0   \n2                          NaN                     NaN            223.0   \n3                          NaN                     NaN              NaN   \n4                          NaN                     NaN              NaN   \n\n  longitude   latitude  \n0  2.000901  49.023909  \n1  1.726600  43.822678  \n2  2.264436  50.748282  \n3  6.571346  45.685170  \n4  2.099404  49.031375  \n\n[5 rows x 40 columns]",
+            "text/html": "<div>\n<style scoped>\n    .dataframe tbody tr th:only-of-type {\n        vertical-align: middle;\n    }\n\n    .dataframe tbody tr th {\n        vertical-align: top;\n    }\n\n    .dataframe thead th {\n        text-align: right;\n    }\n</style>\n<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>id_mutation</th>\n      <th>date_mutation</th>\n      <th>numero_disposition</th>\n      <th>nature_mutation</th>\n      <th>valeur_fonciere</th>\n      <th>adresse_numero</th>\n      <th>adresse_suffixe</th>\n      <th>adresse_nom_voie</th>\n      <th>adresse_code_voie</th>\n      <th>code_postal</th>\n      <th>...</th>\n      <th>type_local</th>\n      <th>surface_reelle_bati</th>\n      <th>nombre_pieces_principales</th>\n      <th>code_nature_culture</th>\n      <th>nature_culture</th>\n      <th>code_nature_culture_speciale</th>\n      <th>nature_culture_speciale</th>\n      <th>surface_terrain</th>\n      <th>longitude</th>\n      <th>latitude</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>0</th>\n      <td>2016-1203354</td>\n      <td>2016-06-23</td>\n      <td>2</td>\n      <td>Vente</td>\n      <td>3100.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>LE PRIEURE</td>\n      <td>B022</td>\n      <td>95000.0</td>\n      <td>...</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>S</td>\n      <td>sols</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>96.0</td>\n      <td>2.000901</td>\n      <td>49.023909</td>\n    </tr>\n    <tr>\n      <th>1</th>\n      <td>2017-1140739</td>\n      <td>2017-05-30</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>100000.0</td>\n      <td>12.0</td>\n      <td>NaN</td>\n      <td>RUE DES TISSERANDS</td>\n      <td>0350</td>\n      <td>81800.0</td>\n      <td>...</td>\n      <td>Maison</td>\n      <td>81.0</td>\n      <td>3.0</td>\n      <td>S</td>\n      <td>sols</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>91.0</td>\n      <td>1.726600</td>\n      <td>43.822678</td>\n    </tr>\n    <tr>\n      <th>2</th>\n      <td>2017-870932</td>\n      <td>2017-07-06</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>176200.0</td>\n      <td>46.0</td>\n      <td>NaN</td>\n      <td>RUE DE THEROUANNE</td>\n      <td>1680</td>\n      <td>62500.0</td>\n      <td>...</td>\n      <td>Maison</td>\n      <td>185.0</td>\n      <td>6.0</td>\n      <td>S</td>\n      <td>sols</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>223.0</td>\n      <td>2.264436</td>\n      <td>50.748282</td>\n    </tr>\n    <tr>\n      <th>3</th>\n      <td>2016-885548</td>\n      <td>2016-06-02</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>180000.0</td>\n      <td>5324.0</td>\n      <td>NaN</td>\n      <td>RES LA NEUVA</td>\n      <td>A083</td>\n      <td>73270.0</td>\n      <td>...</td>\n      <td>Appartement</td>\n      <td>39.0</td>\n      <td>2.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>6.571346</td>\n      <td>45.685170</td>\n    </tr>\n    <tr>\n      <th>4</th>\n      <td>2016-1201902</td>\n      <td>2016-04-14</td>\n      <td>1</td>\n      <td>Vente</td>\n      <td>13900.0</td>\n      <td>59.0</td>\n      <td>NaN</td>\n      <td>AV ROGER GUICHARD</td>\n      <td>0443</td>\n      <td>95610.0</td>\n      <td>...</td>\n      <td>Dépendance</td>\n      <td>NaN</td>\n      <td>0.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>2.099404</td>\n      <td>49.031375</td>\n    </tr>\n  </tbody>\n</table>\n<p>5 rows × 40 columns</p>\n</div>"
+          },
+          "metadata": {}
+        }
+      ],
+      "execution_count": 10,
+      "metadata": {
+        "gather": {
+          "logged": 1646696673497
+        }
+      },
+      "id": "b0028ac5"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def preprocess(df_):\n",
+        "    #df = df_.copy()\n",
+        "    #df.adresse_code_voie=df.adresse_code_voie.astype(str)\n",
+        "    #df.code_commune=df.code_commune.astype(str)\n",
+        "    #df.code_departement=df.code_departement.astype(str)\n",
+        "    #df.numero_volume=df.numero_volume.astype(float)\n",
+        "    #df.lot1_numero=df.lot1_numero.astype(float)\n",
+        "    #df.lot2_numero=df.lot2_numero.astype(float)\n",
+        "    #df.lot3_numero=df.lot3_numero.astype(float)\n",
+        "    #df.lot4_numero=df.lot4_numero.astype(float)\n",
+        "    #df.lot5_numero=df.lot5_numero.astype(float)\n",
+        "    df.date_mutation=pd.to_datetime(df.date_mutation)\n",
+        "\n",
+        "    return df\n",
+        "\n",
+        "df=preprocess(df)"
+      ],
+      "outputs": [],
+      "execution_count": 11,
+      "metadata": {
+        "gather": {
+          "logged": 1646696713469
+        }
+      },
+      "id": "9785753b"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Profiling Dataset\n",
+        "#my_report = sv.analyze(df)\n",
+        "#my_report.show_html() "
+      ],
+      "outputs": [],
+      "execution_count": 12,
+      "metadata": {
+        "gather": {
+          "logged": 1646696718942
+        }
+      },
+      "id": "509b04d2"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Suppression des colonnes inutiles"
+      ],
+      "outputs": [],
+      "execution_count": 13,
+      "metadata": {
+        "gather": {
+          "logged": 1646696724152
+        }
+      },
+      "id": "c5ea70fa"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.iloc[:5,20:]"
+      ],
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "execution_count": 14,
+          "data": {
+            "text/plain": "   lot2_numero  lot2_surface_carrez  lot3_numero  lot3_surface_carrez  \\\n0          NaN                  NaN          NaN                  NaN   \n1          NaN                  NaN          NaN                  NaN   \n2          NaN                  NaN          NaN                  NaN   \n3          NaN                  NaN          NaN                  NaN   \n4          NaN                  NaN          NaN                  NaN   \n\n   lot4_numero  lot4_surface_carrez  lot5_numero  lot5_surface_carrez  \\\n0          NaN                  NaN          NaN                  NaN   \n1          NaN                  NaN          NaN                  NaN   \n2          NaN                  NaN          NaN                  NaN   \n3          NaN                  NaN          NaN                  NaN   \n4          NaN                  NaN          NaN                  NaN   \n\n   nombre_lots  code_type_local   type_local  surface_reelle_bati  \\\n0            0              NaN          NaN                  NaN   \n1            0              1.0       Maison                 81.0   \n2            0              1.0       Maison                185.0   \n3            1              2.0  Appartement                 39.0   \n4            1              3.0   Dépendance                  NaN   \n\n   nombre_pieces_principales code_nature_culture nature_culture  \\\n0                        NaN                   S           sols   \n1                        3.0                   S           sols   \n2                        6.0                   S           sols   \n3                        2.0                 NaN            NaN   \n4                        0.0                 NaN            NaN   \n\n  code_nature_culture_speciale nature_culture_speciale  surface_terrain  \\\n0                          NaN                     NaN             96.0   \n1                          NaN                     NaN             91.0   \n2                          NaN                     NaN            223.0   \n3                          NaN                     NaN              NaN   \n4                          NaN                     NaN              NaN   \n\n   longitude   latitude  \n0   2.000901  49.023909  \n1   1.726600  43.822678  \n2   2.264436  50.748282  \n3   6.571346  45.685170  \n4   2.099404  49.031375  ",
+            "text/html": "<div>\n<style scoped>\n    .dataframe tbody tr th:only-of-type {\n        vertical-align: middle;\n    }\n\n    .dataframe tbody tr th {\n        vertical-align: top;\n    }\n\n    .dataframe thead th {\n        text-align: right;\n    }\n</style>\n<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>lot2_numero</th>\n      <th>lot2_surface_carrez</th>\n      <th>lot3_numero</th>\n      <th>lot3_surface_carrez</th>\n      <th>lot4_numero</th>\n      <th>lot4_surface_carrez</th>\n      <th>lot5_numero</th>\n      <th>lot5_surface_carrez</th>\n      <th>nombre_lots</th>\n      <th>code_type_local</th>\n      <th>type_local</th>\n      <th>surface_reelle_bati</th>\n      <th>nombre_pieces_principales</th>\n      <th>code_nature_culture</th>\n      <th>nature_culture</th>\n      <th>code_nature_culture_speciale</th>\n      <th>nature_culture_speciale</th>\n      <th>surface_terrain</th>\n      <th>longitude</th>\n      <th>latitude</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>0</th>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>S</td>\n      <td>sols</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>96.0</td>\n      <td>2.000901</td>\n      <td>49.023909</td>\n    </tr>\n    <tr>\n      <th>1</th>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>0</td>\n      <td>1.0</td>\n      <td>Maison</td>\n      <td>81.0</td>\n      <td>3.0</td>\n      <td>S</td>\n      <td>sols</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>91.0</td>\n      <td>1.726600</td>\n      <td>43.822678</td>\n    </tr>\n    <tr>\n      <th>2</th>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>0</td>\n      <td>1.0</td>\n      <td>Maison</td>\n      <td>185.0</td>\n      <td>6.0</td>\n      <td>S</td>\n      <td>sols</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>223.0</td>\n      <td>2.264436</td>\n      <td>50.748282</td>\n    </tr>\n    <tr>\n      <th>3</th>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>1</td>\n      <td>2.0</td>\n      <td>Appartement</td>\n      <td>39.0</td>\n      <td>2.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>6.571346</td>\n      <td>45.685170</td>\n    </tr>\n    <tr>\n      <th>4</th>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>1</td>\n      <td>3.0</td>\n      <td>Dépendance</td>\n      <td>NaN</td>\n      <td>0.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>2.099404</td>\n      <td>49.031375</td>\n    </tr>\n  </tbody>\n</table>\n</div>"
+          },
+          "metadata": {}
+        }
+      ],
+      "execution_count": 14,
+      "metadata": {
+        "gather": {
+          "logged": 1646696730134
+        },
+        "scrolled": true
+      },
+      "id": "db08dbc8"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "to_drop = [\"id_mutation\",\"numero_disposition\",\"adresse_numero\",\"adresse_nom_voie\",\"adresse_code_voie\",\"code_postal\",\n",
+        "           \"adresse_suffixe\",\"code_commune\",\"nom_commune\",\"code_departement\",\"ancien_code_commune\", \"ancien_nom_commune\",\n",
+        "           \"id_parcelle\",\"ancien_id_parcelle\",\"type_local\",\"nature_culture\",\"nature_culture_speciale\",\"code_nature_culture_speciale\",\n",
+        "          \"lot1_numero\",\"lot2_numero\",\"lot3_numero\",\"lot4_numero\",\"lot5_numero\", \"numero_volume\"]\n",
+        "\n",
+        "reduced_df = df.drop(to_drop, axis=1)"
+      ],
+      "outputs": [],
+      "execution_count": 15,
+      "metadata": {
+        "gather": {
+          "logged": 1646696745434
+        }
+      },
+      "id": "f03518a1"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "reduced_df"
+      ],
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "execution_count": 16,
+          "data": {
+            "text/plain": "     date_mutation nature_mutation  valeur_fonciere  lot1_surface_carrez  \\\n0       2016-06-23           Vente           3100.0                  NaN   \n1       2017-05-30           Vente         100000.0                  NaN   \n2       2017-07-06           Vente         176200.0                  NaN   \n3       2016-06-02           Vente         180000.0                40.09   \n4       2016-04-14           Vente          13900.0                  NaN   \n...            ...             ...              ...                  ...   \n9995    2016-02-11           Vente            946.0                  NaN   \n9996    2016-12-03           Vente         329000.0                  NaN   \n9997    2017-01-26           Vente           3500.0                  NaN   \n9998    2017-03-14           Vente          13500.0                  NaN   \n9999    2017-02-23           Vente         138000.0                  NaN   \n\n      lot2_surface_carrez  lot3_surface_carrez  lot4_surface_carrez  \\\n0                     NaN                  NaN                  NaN   \n1                     NaN                  NaN                  NaN   \n2                     NaN                  NaN                  NaN   \n3                     NaN                  NaN                  NaN   \n4                     NaN                  NaN                  NaN   \n...                   ...                  ...                  ...   \n9995                  NaN                  NaN                  NaN   \n9996                  NaN                  NaN                  NaN   \n9997                  NaN                  NaN                  NaN   \n9998                  NaN                  NaN                  NaN   \n9999                  NaN                  NaN                  NaN   \n\n      lot5_surface_carrez  nombre_lots  code_type_local  surface_reelle_bati  \\\n0                     NaN            0              NaN                  NaN   \n1                     NaN            0              1.0                 81.0   \n2                     NaN            0              1.0                185.0   \n3                     NaN            1              2.0                 39.0   \n4                     NaN            1              3.0                  NaN   \n...                   ...          ...              ...                  ...   \n9995                  NaN            0              NaN                  NaN   \n9996                  NaN            1              3.0                  NaN   \n9997                  NaN            0              NaN                  NaN   \n9998                  NaN            0              NaN                  NaN   \n9999                  NaN            1              3.0                  NaN   \n\n      nombre_pieces_principales code_nature_culture  surface_terrain  \\\n0                           NaN                   S             96.0   \n1                           3.0                   S             91.0   \n2                           6.0                   S            223.0   \n3                           2.0                 NaN              NaN   \n4                           0.0                 NaN              NaN   \n...                         ...                 ...              ...   \n9995                        NaN                   T           2848.0   \n9996                        0.0                 NaN              NaN   \n9997                        NaN                   J            311.0   \n9998                        NaN                   T           9236.0   \n9999                        0.0                 NaN              NaN   \n\n      longitude   latitude  \n0      2.000901  49.023909  \n1      1.726600  43.822678  \n2      2.264436  50.748282  \n3      6.571346  45.685170  \n4      2.099404  49.031375  \n...         ...        ...  \n9995   3.502363  47.875843  \n9996   2.530342  48.897843  \n9997   0.957504  46.334447  \n9998  -0.076637  43.718375  \n9999  -1.291595  44.211026  \n\n[10000 rows x 16 columns]",
+            "text/html": "<div>\n<style scoped>\n    .dataframe tbody tr th:only-of-type {\n        vertical-align: middle;\n    }\n\n    .dataframe tbody tr th {\n        vertical-align: top;\n    }\n\n    .dataframe thead th {\n        text-align: right;\n    }\n</style>\n<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>date_mutation</th>\n      <th>nature_mutation</th>\n      <th>valeur_fonciere</th>\n      <th>lot1_surface_carrez</th>\n      <th>lot2_surface_carrez</th>\n      <th>lot3_surface_carrez</th>\n      <th>lot4_surface_carrez</th>\n      <th>lot5_surface_carrez</th>\n      <th>nombre_lots</th>\n      <th>code_type_local</th>\n      <th>surface_reelle_bati</th>\n      <th>nombre_pieces_principales</th>\n      <th>code_nature_culture</th>\n      <th>surface_terrain</th>\n      <th>longitude</th>\n      <th>latitude</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>0</th>\n      <td>2016-06-23</td>\n      <td>Vente</td>\n      <td>3100.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>S</td>\n      <td>96.0</td>\n      <td>2.000901</td>\n      <td>49.023909</td>\n    </tr>\n    <tr>\n      <th>1</th>\n      <td>2017-05-30</td>\n      <td>Vente</td>\n      <td>100000.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>0</td>\n      <td>1.0</td>\n      <td>81.0</td>\n      <td>3.0</td>\n      <td>S</td>\n      <td>91.0</td>\n      <td>1.726600</td>\n      <td>43.822678</td>\n    </tr>\n    <tr>\n      <th>2</th>\n      <td>2017-07-06</td>\n      <td>Vente</td>\n      <td>176200.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>0</td>\n      <td>1.0</td>\n      <td>185.0</td>\n      <td>6.0</td>\n      <td>S</td>\n      <td>223.0</td>\n      <td>2.264436</td>\n      <td>50.748282</td>\n    </tr>\n    <tr>\n      <th>3</th>\n      <td>2016-06-02</td>\n      <td>Vente</td>\n      <td>180000.0</td>\n      <td>40.09</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>1</td>\n      <td>2.0</td>\n      <td>39.0</td>\n      <td>2.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>6.571346</td>\n      <td>45.685170</td>\n    </tr>\n    <tr>\n      <th>4</th>\n      <td>2016-04-14</td>\n      <td>Vente</td>\n      <td>13900.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>1</td>\n      <td>3.0</td>\n      <td>NaN</td>\n      <td>0.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>2.099404</td>\n      <td>49.031375</td>\n    </tr>\n    <tr>\n      <th>...</th>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n      <td>...</td>\n    </tr>\n    <tr>\n      <th>9995</th>\n      <td>2016-02-11</td>\n      <td>Vente</td>\n      <td>946.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>T</td>\n      <td>2848.0</td>\n      <td>3.502363</td>\n      <td>47.875843</td>\n    </tr>\n    <tr>\n      <th>9996</th>\n      <td>2016-12-03</td>\n      <td>Vente</td>\n      <td>329000.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>1</td>\n      <td>3.0</td>\n      <td>NaN</td>\n      <td>0.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>2.530342</td>\n      <td>48.897843</td>\n    </tr>\n    <tr>\n      <th>9997</th>\n      <td>2017-01-26</td>\n      <td>Vente</td>\n      <td>3500.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>J</td>\n      <td>311.0</td>\n      <td>0.957504</td>\n      <td>46.334447</td>\n    </tr>\n    <tr>\n      <th>9998</th>\n      <td>2017-03-14</td>\n      <td>Vente</td>\n      <td>13500.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>T</td>\n      <td>9236.0</td>\n      <td>-0.076637</td>\n      <td>43.718375</td>\n    </tr>\n    <tr>\n      <th>9999</th>\n      <td>2017-02-23</td>\n      <td>Vente</td>\n      <td>138000.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>1</td>\n      <td>3.0</td>\n      <td>NaN</td>\n      <td>0.0</td>\n      <td>NaN</td>\n      <td>NaN</td>\n      <td>-1.291595</td>\n      <td>44.211026</td>\n    </tr>\n  </tbody>\n</table>\n<p>10000 rows × 16 columns</p>\n</div>"
+          },
+          "metadata": {}
+        }
+      ],
+      "execution_count": 16,
+      "metadata": {
+        "gather": {
+          "logged": 1646696755103
+        }
+      },
+      "id": "4944010d"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# get_dummies\n",
+        "reduced_df = pd.get_dummies(reduced_df, columns=[\"code_nature_culture\", \"nature_mutation\"])"
+      ],
+      "outputs": [],
+      "execution_count": 17,
+      "metadata": {
+        "gather": {
+          "logged": 1646696762735
+        }
+      },
+      "id": "fbf257b0"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# feature engineering\n",
+        "reduced_df[\"year_mutation\"] = reduced_df.date_mutation.dt.year\n",
+        "reduced_df[\"code_type_local\"] = 5-reduced_df.code_type_local\n",
+        "\n",
+        "reduced_df = reduced_df.drop(\"date_mutation\",axis=1)"
+      ],
+      "outputs": [],
+      "execution_count": 18,
+      "metadata": {
+        "gather": {
+          "logged": 1646696769438
+        }
+      },
+      "id": "969ba5eb"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Valeurs manquantes\n",
+        "(~reduced_df.isna()).sum(axis=0)#/len(reduced_df)"
+      ],
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "execution_count": 19,
+          "data": {
+            "text/plain": "valeur_fonciere                                        9849\nlot1_surface_carrez                                     798\nlot2_surface_carrez                                     207\nlot3_surface_carrez                                      15\nlot4_surface_carrez                                       2\nlot5_surface_carrez                                       1\nnombre_lots                                           10000\ncode_type_local                                        5589\nsurface_reelle_bati                                    4131\nnombre_pieces_principales                              5581\nsurface_terrain                                        6857\nlongitude                                              9684\nlatitude                                               9684\ncode_nature_culture_AB                                10000\ncode_nature_culture_AG                                10000\ncode_nature_culture_B                                 10000\ncode_nature_culture_BF                                10000\ncode_nature_culture_BM                                10000\ncode_nature_culture_BP                                10000\ncode_nature_culture_BR                                10000\ncode_nature_culture_BS                                10000\ncode_nature_culture_BT                                10000\ncode_nature_culture_CA                                10000\ncode_nature_culture_CH                                10000\ncode_nature_culture_E                                 10000\ncode_nature_culture_J                                 10000\ncode_nature_culture_L                                 10000\ncode_nature_culture_LB                                10000\ncode_nature_culture_P                                 10000\ncode_nature_culture_PA                                10000\ncode_nature_culture_PC                                10000\ncode_nature_culture_PE                                10000\ncode_nature_culture_PH                                10000\ncode_nature_culture_PP                                10000\ncode_nature_culture_S                                 10000\ncode_nature_culture_T                                 10000\ncode_nature_culture_VE                                10000\ncode_nature_culture_VI                                10000\nnature_mutation_Adjudication                          10000\nnature_mutation_Echange                               10000\nnature_mutation_Expropriation                         10000\nnature_mutation_Vente                                 10000\nnature_mutation_Vente en l'état futur d'achèvement    10000\nnature_mutation_Vente terrain à bâtir                 10000\nyear_mutation                                         10000\ndtype: int64"
+          },
+          "metadata": {}
+        }
+      ],
+      "execution_count": 19,
+      "metadata": {
+        "gather": {
+          "logged": 1646696778944
+        }
+      },
+      "id": "1ecb193f"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "final_df = reduced_df.fillna(reduced_df.mean())"
+      ],
+      "outputs": [],
+      "execution_count": 20,
+      "metadata": {
+        "gather": {
+          "logged": 1646696789412
+        },
+        "scrolled": true
+      },
+      "id": "4aa5bdd7"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# split\n",
+        "\n",
+        "y = final_df.valeur_fonciere\n",
+        "X = final_df.drop(\"valeur_fonciere\",axis=1)"
+      ],
+      "outputs": [],
+      "execution_count": 21,
+      "metadata": {
+        "gather": {
+          "logged": 1646696791576
+        }
+      },
+      "id": "d69ed2e0"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Normalisation\n",
+        "\n",
+        "from sklearn.preprocessing import MinMaxScaler\n",
+        "\n",
+        "cols = list(final_df.columns.values)\n",
+        "cols.remove(\"valeur_fonciere\")\n",
+        "final_df[cols] = MinMaxScaler().fit_transform(final_df[cols])"
+      ],
+      "outputs": [],
+      "execution_count": 22,
+      "metadata": {
+        "gather": {
+          "logged": 1646696801174
+        }
+      },
+      "id": "0ee85455"
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Entraînement\n",
+        "(final_df.isna()).sum(axis=0)#/len(reduced_df)"
+      ],
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "execution_count": 25,
+          "data": {
+            "text/plain": "valeur_fonciere                                       0\nlot1_surface_carrez                                   0\nlot2_surface_carrez                                   0\nlot3_surface_carrez                                   0\nlot4_surface_carrez                                   0\nlot5_surface_carrez                                   0\nnombre_lots                                           0\ncode_type_local                                       0\nsurface_reelle_bati                                   0\nnombre_pieces_principales                             0\nsurface_terrain                                       0\nlongitude                                             0\nlatitude                                              0\ncode_nature_culture_AB                                0\ncode_nature_culture_AG                                0\ncode_nature_culture_B                                 0\ncode_nature_culture_BF                                0\ncode_nature_culture_BM                                0\ncode_nature_culture_BP                                0\ncode_nature_culture_BR                                0\ncode_nature_culture_BS                                0\ncode_nature_culture_BT                                0\ncode_nature_culture_CA                                0\ncode_nature_culture_CH                                0\ncode_nature_culture_E                                 0\ncode_nature_culture_J                                 0\ncode_nature_culture_L                                 0\ncode_nature_culture_LB                                0\ncode_nature_culture_P                                 0\ncode_nature_culture_PA                                0\ncode_nature_culture_PC                                0\ncode_nature_culture_PE                                0\ncode_nature_culture_PH                                0\ncode_nature_culture_PP                                0\ncode_nature_culture_S                                 0\ncode_nature_culture_T                                 0\ncode_nature_culture_VE                                0\ncode_nature_culture_VI                                0\nnature_mutation_Adjudication                          0\nnature_mutation_Echange                               0\nnature_mutation_Expropriation                         0\nnature_mutation_Vente                                 0\nnature_mutation_Vente en l'état futur d'achèvement    0\nnature_mutation_Vente terrain à bâtir                 0\nyear_mutation                                         0\ndtype: int64"
+          },
+          "metadata": {}
+        }
+      ],
+      "execution_count": 25,
+      "metadata": {
+        "gather": {
+          "logged": 1646696877987
+        }
+      },
+      "id": "fa71efdc"
+    },
+    {
+      "cell_type": "code",
+      "source": [],
+      "outputs": [],
+      "execution_count": null,
+      "metadata": {},
+      "id": "2eb80d9a"
+    }
+  ],
+  "metadata": {
+    "kernel_info": {
+      "name": "python3"
+    },
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python",
+      "version": "3.8.1",
+      "mimetype": "text/x-python",
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "pygments_lexer": "ipython3",
+      "nbconvert_exporter": "python",
+      "file_extension": ".py"
+    },
+    "microsoft": {
+      "host": {
+        "AzureML": {
+          "notebookHasBeenCompleted": true
+        }
+      }
+    },
+    "nteract": {
+      "version": "nteract-front-end@1.0.0"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}

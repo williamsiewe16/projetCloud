@@ -46,12 +46,14 @@ model.fit(X_train, y_train)
 print('train score:', model.score(X_train, y_train))
 print('test score:' , model.score(X_test, y_test))
 
-run.log('train score', model.score(X_train, y_train))
-run.log('test score', model.score(X_test, y_test))
+run.log('train_score', model.score(X_train, y_train))
+run.log('test_score', model.score(X_test, y_test))
 
 os.makedirs('outputs', exist_ok=True)
 # note file saved in the outputs folder is automatically uploaded into experiment record
 joblib.dump(value=model, filename='outputs/projetCloud_model.pkl')
 
+
+print('Model trained and registered.')
 
 run.complete()

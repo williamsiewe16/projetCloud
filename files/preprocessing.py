@@ -5,6 +5,7 @@ from azureml.core import Run, Dataset
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
+import joblib
 
 
 parser = argparse.ArgumentParser()
@@ -52,7 +53,9 @@ run.log('processed_rows', row_count)
 # Normalization
 X = final_df.drop("valeur_fonciere", axis=1)
 cols = X.columns
-final_df[cols] = MinMaxScaler().fit_transform(X)
+
+scaler = MinMaxScaler()
+final_df[cols] = scaler.fit_transform(X)
 
 run.log_list('nulls', list((final_df.isna()).sum(axis=0).values))
 
@@ -61,6 +64,9 @@ print("Saving Data...")
 os.makedirs(save_folder, exist_ok=True)
 save_path = os.path.join(save_folder,'data.csv')
 final_df.to_csv(save_path, index=False, header=True)
+
+joblib.dump(value=scaler, filename='outputs/myscaler.scl')
+joblib.dump(value=final_df.columns, filename='outputs/cols.cl')
 
 # End the run
 run.complete()
