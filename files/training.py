@@ -32,7 +32,6 @@ run.log('cols', len(df.columns))
 # Separate features and labels
 y = df.valeur_fonciere
 
-run.log("nb null values", (df.isna()).sum(axis=0).sum())
 X = df.drop("valeur_fonciere",axis=1)
 
 # Split data into training set and test set
@@ -48,6 +47,8 @@ print('test score:' , model.score(X_test, y_test))
 
 run.log('train_score', model.score(X_train, y_train))
 run.log('test_score', model.score(X_test, y_test))
+
+run.log('number of parameters', len(model.coef_))
 
 os.makedirs('outputs', exist_ok=True)
 # note file saved in the outputs folder is automatically uploaded into experiment record
