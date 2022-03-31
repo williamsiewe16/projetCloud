@@ -57,7 +57,9 @@ cols = X.columns
 scaler = MinMaxScaler()
 final_df[cols] = scaler.fit_transform(X)
 
-run.log_list('nulls', list((final_df.isna()).sum(axis=0).values))
+run.log('number of parameters', len(final_df))
+run.log('scaler range len', len(scaler.data_range_))
+run.log_list('params',list(final_df.columns.values))
 
 # Save the prepped data
 print("Saving Data...")
